@@ -34,11 +34,15 @@
       },
       handleClickToHistory() {
         this.show = false
-        this.$router.push('/history')
+        setTimeout(() => {
+          this.$router.push('/history')
+        }, 500)
       },
       handleClickToCoupon() {
         this.show = false
-        this.$router.push('/coupon')
+        setTimeout(() => {
+          this.$router.push('/coupon')
+        }, 500)
       },
       handleClickToLogout() {
         this.show = false

@@ -20,8 +20,9 @@ const debug = process.env.NODE_ENV !== 'production'
 Vue.config.productionTip = debug
 
 document.addEventListener('DOMContentLoaded', function () {
-  typeof FastClick === 'function' && FastClick.attach(document.body);
-}, false);
+  /* eslint-disable no-undef */
+  typeof FastClick === 'function' && FastClick.attach(document.body)
+}, false)
 
 /* eslint-disable no-new */
 new Vue({
