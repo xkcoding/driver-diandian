@@ -4,42 +4,24 @@ import Vue from 'vue'
 // By default we import all the components.
 // Only reserve the components on demand and remove the rest.
 // Style is always required.
-import {
-  /* eslint-disable no-unused-vars */
-  Style,
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  Loading,
-  Tip,
-  Popup,
-  Toast,
-  Picker,
-  TimePicker,
-  Dialog,
-  ActionSheet,
-  Scroll,
-  Slide,
-  IndexList
-} from 'cube-ui'
+import Cube from 'cube-ui'
+import VueLazyload from 'vue-lazyload'
+/* 相当于import YDUI from 'vue-ydui/ydui.rem.js' */
+import YDUI from 'vue-ydui'
+import 'vue-ydui/dist/ydui.rem.css'
 import App from './App'
 import router from './router'
 
-Vue.use(Button)
-Vue.use(Checkbox)
-Vue.use(CheckboxGroup)
-Vue.use(Loading)
-Vue.use(Tip)
-Vue.use(Toast)
-Vue.use(Picker)
-Vue.use(TimePicker)
-Vue.use(Dialog)
-Vue.use(ActionSheet)
-Vue.use(Scroll)
-Vue.use(Slide)
-Vue.use(IndexList)
+Vue.use(Cube)
+Vue.use(YDUI)
+Vue.use(VueLazyload)
 
-Vue.config.productionTip = false
+const debug = process.env.NODE_ENV !== 'production'
+Vue.config.productionTip = debug
+
+document.addEventListener('DOMContentLoaded', function () {
+  typeof FastClick === 'function' && FastClick.attach(document.body);
+}, false);
 
 /* eslint-disable no-new */
 new Vue({
