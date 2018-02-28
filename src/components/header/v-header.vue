@@ -40,7 +40,7 @@
       top 0
       left .1rem
       height $height-header
-      font-size $font-size-header-back
+      font-size $font-size-app
     .text
       text-align center
       font-size $font-size-header
@@ -49,5 +49,5 @@
       top 0
       right .1rem
       height $height-header
-      font-size $font-size-header-back
+      font-size $font-size-app
 </style>

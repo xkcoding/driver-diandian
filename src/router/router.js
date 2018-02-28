@@ -8,6 +8,14 @@ const routers = [
     component: resolve => require(['pages/index'], resolve)
   },
   {
+    path: '/service-price',
+    name: 'service-price',
+    meta: {
+      title: '服务价格'
+    },
+    component: resolve => require(['pages/service-price'], resolve)
+  },
+  {
     path: '/history',
     name: 'history',
     meta: {

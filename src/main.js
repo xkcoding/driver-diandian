@@ -9,6 +9,10 @@ import VueLazyload from 'vue-lazyload'
 /* 相当于import YDUI from 'vue-ydui/ydui.rem.js' */
 import YDUI from 'vue-ydui'
 import 'vue-ydui/dist/ydui.rem.css'
+import fastclick from 'fastclick'
+import moment from 'moment'
+import lodash from 'lodash'
+import axios from 'axios'
 import App from './App'
 import router from './router'
 import 'common/stylus/icon.styl'
@@ -16,19 +20,19 @@ import 'common/stylus/icon.styl'
 Vue.use(Cube)
 Vue.use(YDUI)
 Vue.use(VueLazyload)
+Vue.prototype.$moment = moment
+Vue.prototype.$lodash = lodash
+Vue.prototype.$http = axios
 
 const debug = process.env.NODE_ENV !== 'production'
 Vue.config.productionTip = debug
 
-document.addEventListener('DOMContentLoaded', function () {
-  /* eslint-disable no-undef */
-  typeof FastClick === 'function' && FastClick.attach(document.body)
-}, false)
+fastclick.attach(document.body)
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: {App}
 })
