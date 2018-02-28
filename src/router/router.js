@@ -1,6 +1,6 @@
 const routers = [
   {
-    path: '/index',
+    path: '/',
     name: 'index',
     meta: {
       title: '首页'
@@ -33,7 +33,7 @@ const routers = [
   },
   {
     path: '*',
-    redirect: '/index'
+    redirect: '/'
   }
 ]
 

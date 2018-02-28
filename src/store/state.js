@@ -1,5 +1,6 @@
 const state = {
-  user: {}
+  user: {},
+  direction: 'forward'
 }
 
 export default state
