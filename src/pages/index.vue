@@ -16,10 +16,13 @@
           <div class="start-place">零点生活超市</div>
         </div>
         <div class="change-contact">
-          <yd-icon name="user" class="user-icon" custom color="#bfbfbf" size=".4rem"></yd-icon>换联系人代叫
+          <yd-icon name="user" class="user-icon" custom color="#bfbfbf" size=".4rem"></yd-icon>
+          换联系人代叫
         </div>
         <div class="call">
-          <yd-button class="btn-call" type="disabled" disabled>呼叫代驾</yd-button>
+          <yd-button class="btn-call" :bgcolor="user?'#494c5a':'#cccccc'" :color="user?'#ffffff':'#f0f0f0'"
+                     @click.native="handleClickCall">呼叫代驾
+          </yd-button>
         </div>
       </div>
       <div class="addition" @click="handleClickToServicePrice">
@@ -37,20 +40,103 @@
 </template>
 
 <script>
-  import storage from 'good-storage'
-  import * as consts from 'common/js/const'
+  import {mapGetters} from 'vuex'
+  import {getGpsEnabled, setGpsEnabled} from 'common/js/cache'
 
   export default {
     name: 'index',
     data() {
       return {
-        show: false
+        show: false,
+        mobile: ''
       }
+    },
+    computed: {
+      checkMobile() {
+        let reg = new RegExp('^(13[0-9]|14[0-9]|15[0-9]|166|17[0-9]|18[0-9]|19[8|9])\\d{8}$')
+        return reg.test(this.mobile)
+      },
+      ...mapGetters([
+        'user'
+      ])
     },
     methods: {
       toggle() {
-        this.show = true
-        this.$refs.popup.$refs.content.style.height = '100%'
+        if (this.user) {
+          this.show = true
+          this.$refs.popup.$refs.content.style.height = '100%'
+        } else {
+          this.openLoginPopup()
+        }
+      },
+      handleClickCall() {
+        if (this.user) {
+          console.log('呼叫代驾')
+        } else {
+          this.openLoginPopup()
+        }
+      },
+      openLoginPopup() {
+        let _this = this
+        this.$createDialog({
+          type: 'alert',
+          showClose: true,
+          confirmBtn: {
+            text: '下一步',
+            active: _this.checkMobile,
+            disabled: !_this.checkMobile
+          },
+          onConfirm: () => {
+            this.$createToast({
+              type: 'warn',
+              time: 1000,
+              txt: '退出成功'
+            }).show()
+            console.log(this.checkMobile)
+          }
+        }, (createElement) => {
+          return [
+            createElement('div', {
+              style: {
+                width: '100%'
+              },
+              slot: 'title'
+            }, [
+              createElement('h4', {
+                style: {
+                  margin: '.4rem 0'
+                }
+              }, '登录')
+            ]),
+            createElement('div', {
+              style: {
+                width: '100%',
+                textAlign: 'center'
+              },
+              slot: 'content'
+            }, [
+              createElement('input', {
+                domProps: {
+                  value: _this.mobile,
+                  placeholder: '请输入手机号码'
+                },
+                style: {
+                  height: '.4rem',
+                  width: '80%',
+                  marginLeft: '10%',
+                  marginRight: '10%',
+                  borderBottom: '1px solid #cccccc',
+                  fontSize: '.3rem'
+                },
+                on: {
+                  input(event) {
+                    _this.mobile = event.target.value
+                  }
+                }
+              })
+            ])
+          ]
+        }).show()
       },
       handleClickToServicePrice() {
         this.$router.push('/service-price')
@@ -71,13 +157,13 @@
             txt: '不允许',
             color: '#0066ff',
             callback: () => {
-              storage.session.set(consts.DRIVER_GPS_ENABLED, false)
+              setGpsEnabled(false)
             }
           }, {
             txt: '好',
             color: '#0066ff',
             callback: () => {
-              storage.session.set(consts.DRIVER_GPS_ENABLED, true)
+              setGpsEnabled(true)
             }
           }]
         })
@@ -104,7 +190,6 @@
               time: 1000,
               txt: '退出成功'
             }).show()
-            storage.remove(consts.USER)
           },
           onCancel: () => {
           }
@@ -135,18 +220,14 @@
         }).show()
       },
       __init() {
-        let driverGpsEnabled = storage.session.get(consts.DRIVER_GPS_ENABLED)
-        if (driverGpsEnabled === undefined || driverGpsEnabled === '') {
+        let driverGpsEnabled = getGpsEnabled()
+        if (driverGpsEnabled === null || driverGpsEnabled === '') {
           this.openGPSConfrim()
         }
       }
     },
     mounted() {
       this.__init()
-      console.log()
-      // if (!storage.get(consts.DRIVER_GPS_ENABLED)) {
-      //   this.openConfrim()
-      // }
     }
   }
 </script>
@@ -155,6 +236,8 @@
   @import "~common/stylus/variable"
 
   .index
+    display flex
+    flex-direction column
     width 100%
     height 100%
     background $color-background

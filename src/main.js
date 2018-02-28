@@ -15,6 +15,9 @@ import lodash from 'lodash'
 import axios from 'axios'
 import App from './App'
 import router from './router'
+import store from './store'
+import {SET_USER} from './store/mutation-types'
+import {getUser} from 'common/js/cache'
 import 'common/stylus/icon.styl'
 
 Vue.use(Cube)
@@ -29,10 +32,14 @@ Vue.config.productionTip = debug
 
 fastclick.attach(document.body)
 
+const user = getUser()
+store.commit(SET_USER, user)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: {App}
 })
