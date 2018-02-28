@@ -71,13 +71,13 @@
             txt: '不允许',
             color: '#0066ff',
             callback: () => {
-              storage.set(consts.DRIVER_GPS_ENABLED, false)
+              storage.session.set(consts.DRIVER_GPS_ENABLED, false)
             }
           }, {
             txt: '好',
             color: '#0066ff',
             callback: () => {
-              storage.set(consts.DRIVER_GPS_ENABLED, true)
+              storage.session.set(consts.DRIVER_GPS_ENABLED, true)
             }
           }]
         })
@@ -135,7 +135,7 @@
         }).show()
       },
       __init() {
-        let driverGpsEnabled = storage.get(consts.DRIVER_GPS_ENABLED)
+        let driverGpsEnabled = storage.session.get(consts.DRIVER_GPS_ENABLED)
         if (driverGpsEnabled === undefined || driverGpsEnabled === '') {
           this.openGPSConfrim()
         }
