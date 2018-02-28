@@ -36,6 +36,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       'cube-ui': 'cube-ui/lib',
+      'common': resolve('src/common'),
       'components': resolve('src/components'),
       'pages': resolve('src/pages')
     }

@@ -34,15 +34,11 @@
       },
       handleClickToHistory() {
         this.show = false
-        setTimeout(() => {
-          this.$router.push('/history')
-        }, 500)
+        this.$router.push('/history')
       },
       handleClickToCoupon() {
         this.show = false
-        setTimeout(() => {
-          this.$router.push('/coupon')
-        }, 500)
+        this.$router.push('/coupon')
       },
       handleClickToLogout() {
         this.show = false
@@ -107,13 +103,16 @@
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "~common/stylus/variable"
+
   .index
     width 100%
     height 100%
+    background $color-background
     .title-wrapper
       position relative
       width 100%
-      height 1rem
+      height $height-header
       .user-wrapper
         position absolute
         top .1rem
@@ -122,18 +121,18 @@
         left .1rem
       .title
         text-align center
-        font-size .4rem
+        font-size $font-size-menu
         font-weight normal
-        line-height 1rem
+        line-height $height-header
         .slogan
-          color #ffcc00
+          color $slogan-text-color
     .menu-wrapper
       position relative
       height 100%
       width 100%
-      color: #ffffff
-      font-size .4rem
-      background #494c5a
+      color: $color-text
+      font-size $font-size-menu
+      background $color-app-theme
       .item
         height 1.5rem
         line-height 1.5rem

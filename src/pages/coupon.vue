@@ -1,34 +1,23 @@
 <template>
   <div class="coupon">
-    <div class="header-wrapper" ref="headerWrapper">
-      <yd-navbar ref="header" title="优惠券" :height="headerHeight" fixed bgcolor="#494c5a" color="#ffffff">
-        <yd-navbar-back-icon slot="left" color="#ffffff" @click.native="handleClickToBack"></yd-navbar-back-icon>
-      </yd-navbar>
-    </div>
+    <v-header title="优惠券"/>
     <div class="content-wrapper">
-      <div class="content">111111111</div>
+      <divider text="暂无优惠券"/>
+      <div class="content">
+        <yd-icon name="coupon" custom color="#999" size="2rem"></yd-icon>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+  import vHeader from 'components/header/v-header'
+  import divider from 'components/divider/divider'
+
   export default {
     name: 'coupon',
-    data() {
-      return {
-        headerHeight: '1rem'
-      }
-    },
-    methods: {
-      handleClickToBack() {
-        setTimeout(() => {
-          this.$router.back()
-        }, 500)
-      }
-    },
-    mounted() {
-      let headerWrapperHeight = this.$refs.headerWrapper.clientHeight
-      this.headerHeight = headerWrapperHeight + 'px'
+    components: {
+      vHeader, divider
     }
   }
 </script>
@@ -39,11 +28,9 @@
     width 100%
     display flex
     flex-direction column
-    .header-wrapper
-      height 1rem
     .content-wrapper
       height 100%
       overflow scroll
       .content
-        height 50rem
+        text-align center
 </style>

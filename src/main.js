@@ -11,6 +11,7 @@ import YDUI from 'vue-ydui'
 import 'vue-ydui/dist/ydui.rem.css'
 import App from './App'
 import router from './router'
+import 'common/stylus/icon.styl'
 
 Vue.use(Cube)
 Vue.use(YDUI)
