@@ -124,8 +124,7 @@
         if (this.user) {
           this.showNav = true
         } else {
-          // this.openLoginPopup()
-          this.openCodePopup()
+          this.openLoginPopup()
         }
       },
       openCodePopup() {
