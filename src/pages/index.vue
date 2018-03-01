@@ -29,32 +29,49 @@
         服务价格
       </div>
     </div>
-    <yd-popup v-model="show" position="left" ref="popup" width="60%" height="10%">
+    <cube-dialog ref="loginDialog" type="alert" :confirmBtn="confirmBtn" showClose @close="handleClickCloseDialog">
+      <div class="login-dialog-title-wrapper" slot="title">
+        <h4 class="title">登录</h4>
+      </div>
+      <div class="login-dialog-content-wrapper" slot="content">
+        <yd-input class="login-dialog-content" v-model="mobile" ref="inputMobile" :show-success-icon="false"
+                  :show-error-icon="false" regex="mobile" type="tel" placeholder="请输入手机号码"></yd-input>
+      </div>
+    </cube-dialog>
+    <v-popup v-model="show" position="left" ref="popup" width="60%" height="10%">
       <div class="menu-wrapper">
         <div class="item" @click="handleClickToHistory">我的行程</div>
         <div class="item" @click="handleClickToCoupon">优惠券</div>
         <div class="item logout" @click="handleClickToLogout">退出</div>
       </div>
-    </yd-popup>
+    </v-popup>
   </div>
 </template>
 
 <script>
   import {mapGetters} from 'vuex'
   import {getGpsEnabled, setGpsEnabled} from 'common/js/cache'
+  import vPopup from 'components/popup/v-popup'
 
   export default {
     name: 'index',
+    components: {
+      vPopup
+    },
     data() {
       return {
         show: false,
-        mobile: ''
+        mobile: '',
+        isMobile: false
       }
     },
     computed: {
-      checkMobile() {
-        let reg = new RegExp('^(13[0-9]|14[0-9]|15[0-9]|166|17[0-9]|18[0-9]|19[8|9])\\d{8}$')
-        return reg.test(this.mobile)
+      confirmBtn() {
+        return {
+          text: '下一步',
+          active: this.isMobile,
+          disabled: !this.isMobile
+        }
       },
       ...mapGetters([
         'user'
@@ -64,7 +81,6 @@
       toggle() {
         if (this.user) {
           this.show = true
-          this.$refs.popup.$refs.content.style.height = '100%'
         } else {
           this.openLoginPopup()
         }
@@ -76,67 +92,15 @@
           this.openLoginPopup()
         }
       },
+      handleClickCloseDialog() {
+        this.mobile = ''
+      },
       openLoginPopup() {
-        let _this = this
-        this.$createDialog({
-          type: 'alert',
-          showClose: true,
-          confirmBtn: {
-            text: '下一步',
-            active: _this.checkMobile,
-            disabled: !_this.checkMobile
-          },
-          onConfirm: () => {
-            this.$createToast({
-              type: 'warn',
-              time: 1000,
-              txt: '退出成功'
-            }).show()
-            console.log(this.checkMobile)
-          }
-        }, (createElement) => {
-          return [
-            createElement('div', {
-              style: {
-                width: '100%'
-              },
-              slot: 'title'
-            }, [
-              createElement('h4', {
-                style: {
-                  margin: '.4rem 0'
-                }
-              }, '登录')
-            ]),
-            createElement('div', {
-              style: {
-                width: '100%',
-                textAlign: 'center'
-              },
-              slot: 'content'
-            }, [
-              createElement('input', {
-                domProps: {
-                  value: _this.mobile,
-                  placeholder: '请输入手机号码'
-                },
-                style: {
-                  height: '.4rem',
-                  width: '80%',
-                  marginLeft: '10%',
-                  marginRight: '10%',
-                  borderBottom: '1px solid #cccccc',
-                  fontSize: '.3rem'
-                },
-                on: {
-                  input(event) {
-                    _this.mobile = event.target.value
-                  }
-                }
-              })
-            ])
-          ]
-        }).show()
+        this.$refs.loginDialog.show()
+      },
+      checkMobile() {
+        let reg = new RegExp('^(13[0-9]|14[0-9]|15[0-9]|166|17[0-9]|18[0-9]|19[8|9])\\d{8}$')
+        this.isMobile = reg.test(this.mobile)
       },
       handleClickToServicePrice() {
         this.$router.push('/service-price')
@@ -224,6 +188,11 @@
         if (driverGpsEnabled === null || driverGpsEnabled === '') {
           this.openGPSConfrim()
         }
+      }
+    },
+    watch: {
+      mobile() {
+        this.checkMobile()
       }
     },
     mounted() {
@@ -337,4 +306,17 @@
           text-align center
           margin 0
           background #ff0000
+    .login-dialog-title-wrapper
+      width 100%
+      h4
+        margin .4rem 0
+    .login-dialog-content-wrapper
+      width 100%
+      .login-dialog-content
+        height .4rem
+        width 80%
+        margin-left 10%
+        margin-right 10%
+        border-bottom 1px solid #cccccc
+        font-size .3rem
 </style>
